@@ -9,6 +9,7 @@ router.get("/", async (req, res) => {
 });
 
 router.post("/", async (req, res) => {
+  if (req.body.username == "") return res.json("Path `username` is required.");
   let user = new User({
     username: req.body.username,
   });
@@ -41,8 +42,16 @@ GET user's exercise log: GET /api/users/:_id/logs?[from][&to][&limit]
 from, to = dates (yyyy-mm-dd); limit = number
 */
 
-router.get("/:id/logs", (req, res) => {
-  res.json({ from: req.query.from, to: req.query.to, limit: req.query.limit });
+router.get("/:id/logs", async (req, res) => {
+  if (!Object.keys(req.query).length) {
+    let user = await User.findById(req.params.id);
+    res.json({
+      _id: user._id,
+      username: user.username,
+      count: user.log.length,
+      log: user.log,
+    });
+  }
 });
 
 module.exports = router;
