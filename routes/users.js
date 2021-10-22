@@ -38,7 +38,7 @@ router.post("/:id/exercises", async (req, res) => {
   }
   const newExercise = {
     date: date.toDateString(),
-    duration: req.body.duration,
+    duration: parseInt(req.body.duration),
     description: req.body.description,
   };
 
