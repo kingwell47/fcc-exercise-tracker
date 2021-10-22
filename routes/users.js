@@ -30,10 +30,16 @@ router.post("/", async (req, res) => {
 });
 
 router.post("/:id/exercises", async (req, res) => {
+  let date;
+  if (req.body.date) {
+    date = new Date(req.body.date);
+  } else {
+    date = new Date();
+  }
   const newExercise = {
-    description: req.body.description,
+    date: date.toDateString(),
     duration: req.body.duration,
-    date: new Date(req.body.date).toDateString(),
+    description: req.body.description,
   };
 
   try {
